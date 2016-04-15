@@ -1,6 +1,7 @@
 import urllib.request
 import json
 import os.path
+import time
 
 SAVE_DIR = 'anime_infos'
 SAVE_FILE = 'eval_anime_save.json'
@@ -28,6 +29,7 @@ def main():
         if os.path.exists(path_of(tid)):
             print('skip')
             continue
+        time.sleep(0.3)
         anime_info = get_anime_info(tid)
         save_anime_info(tid, anime_info)
 
