@@ -60,6 +60,8 @@ def main():
     anime_features = []
     all_features = {}
     for file in os.listdir(SAVE_DIR):
+        if file == '.keep':
+            continue
         anime_info = load_anime_info(SAVE_DIR + '/' + file)
         if not ( anime_info['TID'] in answers or anime_info['TID'] in target_tids ):
             continue
