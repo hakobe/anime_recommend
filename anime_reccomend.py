@@ -18,22 +18,20 @@ ANSWER_FILE = 'answer.tsv'
 TARGET_FILE = 'target.tsv'
 
 def over_sample(x,y):
-    class_xs = []
-    min_elems = None
-
     elems_0 = x[(y == 0)]
     elems_1 = x[(y == 1)]
 
-    diff = elems_0.shape[0] - elems_1.shape[0]
-    while elems_1.shape[0] < diff:
-        elems_1 = np.concatenate([elems_1, elems_1])
+    l = elems_1.shape[0]
+    new_elems_0 = shuffle(elems_0, n_samples=l)
+    new_y_0 = np.empty(l)
+    new_y_0.fill(0)
+    new_y_1 = np.empty(elems_1.shape[0])
+    new_y_1.fill(1)
 
-    append_X = elems_1[:diff]
-    append_y = np.empty(diff)
-    append_y.fill(1)
-
-    xs = np.concatenate((x, append_X))
-    ys = np.concatenate((y, append_y))
+    xs = np.concatenate((new_elems_0, elems_1))
+    ys = np.concatenate((new_y_0, new_y_1))
+    print(xs.shape)
+    print(ys.shape)
 
     return shuffle(xs, ys)
 
