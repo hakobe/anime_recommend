@@ -106,7 +106,7 @@ def main():
     model = train(X_train, y_train, hidden_n = scores[0][0], weight_decay = scores[0][1])
     yd = model(Variable(X_val)).data
     ycmp = (yd[:, 0] < yd[:, 1]).astype(np.int32)
-    print(classification_report(ycmp, y_val))
+    print(classification_report(y_val, y_cmp))
 
     tids_target = target[:, 0]
     X_target = target[:, 1:]
