@@ -25,7 +25,7 @@ def over_sample(x,y):
     elems_1 = x[(y == 1)]
 
     diff = elems_0.shape[0] - elems_1.shape[0]
-    while elems_1.shape[0] < diff * 2:
+    while elems_1.shape[0] < diff:
         elems_1 = np.concatenate([elems_1, elems_1])
 
     append_X = elems_1[:diff]
