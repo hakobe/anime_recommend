@@ -59,17 +59,16 @@ class AnimeChain(Chain):
 
 def train(X, t, hidden_n, weight_decay):
     print(hidden_n, weight_decay)
+
     model = AnimeChain(X.shape[1], hidden_n)
     optimizer = OS.Adam()
     optimizer.setup(model)
     if weight_decay:
         optimizer.add_hook(O.WeightDecay(weight_decay))
 
-    X_o, t_o = over_sample(X, t)
-
     for e in range(1500):
-        V_X = Variable(X_o)
-        V_t = Variable(np.array(t_o, dtype='int32'))
+        V_X = Variable(X)
+        V_t = Variable(np.array(t, dtype='int32'))
 
         V_y = model(V_X)
         model.zerograds()
