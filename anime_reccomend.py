@@ -9,12 +9,33 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 from sklearn.metrics import fbeta_score
 from sklearn.metrics import precision_recall_fscore_support
+from sklearn.utils import shuffle
 
 import matplotlib.pyplot as plt
 
 FEATURE_FILE = 'feature.tsv'
 ANSWER_FILE = 'answer.tsv'
 TARGET_FILE = 'target.tsv'
+
+def over_sample(x,y):
+    class_xs = []
+    min_elems = None
+
+    elems_0 = x[(y == 0)]
+    elems_1 = x[(y == 1)]
+
+    diff = elems_0.shape[0] - elems_1.shape[0]
+    while elems_1.shape[0] < diff * 2:
+        elems_1 = np.concatenate([elems_1, elems_1])
+
+    append_X = elems_1[:diff]
+    append_y = np.empty(diff)
+    append_y.fill(1)
+
+    xs = np.concatenate((x, append_X))
+    ys = np.concatenate((y, append_y))
+
+    return shuffle(xs, ys)
 
 def load_data():
     X_all = np.loadtxt(FEATURE_FILE, delimiter="\t", dtype='float32')
@@ -47,9 +68,11 @@ def train(X, t, hidden_n, weight_decay):
     if weight_decay:
         optimizer.add_hook(O.WeightDecay(weight_decay))
 
+    X_o, t_o = over_sample(X, t)
+
     for e in range(1500):
-        V_X = Variable(X)
-        V_t = Variable(np.array(t, dtype='int32'))
+        V_X = Variable(X_o)
+        V_t = Variable(np.array(t_o, dtype='int32'))
 
         V_y = model(V_X)
         model.zerograds()

@@ -99,9 +99,8 @@ def main():
 
             if anime_feature['tid'] in answers:
                 a = answers[anime_feature['tid']]
-                for i in range(pos_weight if a == 1 else 1):
-                    print(str(a), file=af)
-                    print("\t".join([str(x) for x in feature_vector]), file=ff)
+                print(str(a), file=af)
+                print("\t".join([str(x) for x in feature_vector]), file=ff)
             elif anime_feature['tid'] in target_tids:
                 row = [anime_feature['tid']]
                 row.extend(feature_vector)
