@@ -40,10 +40,9 @@ def load_data():
     y_all = np.loadtxt(ANSWER_FILE, delimiter="\t", dtype='int')
     target = np.loadtxt(TARGET_FILE, delimiter="\t", dtype='float32')
 
-    X_train, X_rest, y_train, y_rest = cross_validation.train_test_split(X_all, y_all, test_size=0.4, random_state=5)
-    X_val, X_test, y_val, y_test = cross_validation.train_test_split(X_rest, y_rest, test_size=0.5, random_state=5)
+    X_train, X_val, y_train, y_val = cross_validation.train_test_split(X_all, y_all, test_size=0.3, random_state=5)
 
-    return (X_train, y_train, X_val, y_val, X_test, y_test, target)
+    return (X_train, y_train, X_val, y_val, target)
 
 class AnimeChain(Chain):
 
@@ -83,7 +82,7 @@ def train(X, t, hidden_n, weight_decay):
     return model
 
 def main():
-    X_train, y_train, X_val, y_val, X_test, y_test, target = load_data()
+    X_train, y_train, X_val, y_val, target = load_data()
     print(X_train.shape)
 
     weight_decays = [None, 0.0005]
