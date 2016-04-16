@@ -61,7 +61,7 @@ def train(X, t, hidden_n, weight_decay):
     print(hidden_n, weight_decay)
 
     model = AnimeChain(X.shape[1], hidden_n)
-    optimizer = OS.Adam()
+    optimizer = OS.AdaGrad()
     optimizer.setup(model)
     if weight_decay:
         optimizer.add_hook(O.WeightDecay(weight_decay))
