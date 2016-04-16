@@ -34,7 +34,7 @@ def retrieve_features(anime_info):
 
     features = []
     for k, v in grouper(2, heads_and_contents):
-        if k == 'スタッフ' or k == 'キャスト':
+        if k == 'スタッフ':
             names = extract_names(v)
 
             for name in names:
@@ -63,7 +63,7 @@ def main():
         if file == '.keep':
             continue
         anime_info = load_anime_info(SAVE_DIR + '/' + file)
-        if not ( anime_info['TID'] in answers or anime_info['TID'] in target_tids ):
+        if not ( (anime_info['TID'] in answers and int(anime_info['TID']) > 2000) or anime_info['TID'] in target_tids):
             continue
 
         features = retrieve_features(anime_info)
@@ -78,18 +78,9 @@ def main():
         })
 
     # 指定回数以上登場している特徴のみ採用する
-    features_base = [ f for f in all_features if all_features[f] >= 5]
-    features_base.sort()
+    features_base = [ f for f in all_features if all_features[f] >= 6 and all_features[f] <= 60]
+    features_base.sort( )
 
-
-    print(len(answers))
-    print(len(anime_features))
-    print(target_tids)
-
-    pos_ans_n = len([ a for a in answers.values() if a == 1])
-    neg_ans_n = len(answers) - pos_ans_n
-    pos_weight = math.ceil(neg_ans_n / pos_ans_n)
-    print(pos_weight)
 
     with open(FEATURE_FILE, 'w') as ff, open(ANSWER_FILE, 'w') as af, open(TARGET_FILE, 'w') as tf:
         for anime_feature in sorted(anime_features, key=lambda x: int(x['tid'])):
